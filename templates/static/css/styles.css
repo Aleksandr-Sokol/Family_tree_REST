@@ -1,0 +1,42 @@
+
+
+.btn-ttronix1:hover {
+    outline: 0;
+    cursor: pointer;
+    border: none;
+    border-bottom: 1px solid black;
+    background: linear-gradient( 45deg, #00FFFF, #7FFFD4);
+    color: #fff;
+    font-family: sans-serif;
+    /*text-transform: uppercase;*/
+    box-shadow: 0px 10px 15px 0px #87CEEB;
+    text-shadow: 1px 1px 2px gray, 0 0 1em red;
+    /*margin: 0px;*/
+    transform: scale(1.1);
+}
+
+.btn-ttronix1_no_scale:hover {
+    transform: scale(1);
+}
+
+.btn-ttronix1_small{
+    padding: 5px 15px 5px 15px !important;
+    display: inline-block;
+}
+
+.btn-ttronix1{
+    background-color: #4CAF50; /* Green */
+    color: white;
+    outline: 0;
+    cursor: pointer;
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px 10px 10px 10px;
+    /*box-shadow: 0px 10px 15px 0px rgba(255, 111, 170, 0.75);*/
+    /*text-shadow: 1px 1px 2px gray, 0 0 1em red;*/
+    position: relative;
+}

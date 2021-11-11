@@ -24,7 +24,7 @@ class Person(Human):
     religion = CharField(max_length=120, null=True, blank=True)
     position = CharField(max_length=250)
     email = EmailField(null=True, unique=True, blank=True)
-    birth_date = DateField(null=False)
+    birth_date = DateField(null=True, blank=True)
     death_date = DateField(null=True, blank=True)
     information = CharField(max_length=120, null=True, blank=True)
     gender = CharField(max_length=1,
@@ -34,7 +34,8 @@ class Person(Human):
     position = ForeignKey(Position,
                           related_name='position',
                           on_delete=PROTECT,
-                          null=True)
+                          null=True,
+                          blank=True)
     mother = ForeignKey('self',
                         on_delete=SET_NULL,
                         blank=True,
@@ -51,17 +52,17 @@ class Person(Human):
                         null=True,
                         related_name='spouse')
 
-    last_spouse = ManyToManyField('self',
-                             blank=True,
-                             null=True,
-                             )
+    # last_spouse = ManyToManyField('self',
+    #                          blank=True,
+    #                          null=True,
+    #                          )
 
     # events = JSONField(blank=True,
     #                     null=True,
     #                    )
 
     class Meta:
-        verbose_name_plural  = 'Persons'
+        verbose_name_plural = 'Persons'
 
     def __str__(self):
         return f'{self.family} {self.name}'

@@ -9,11 +9,12 @@ class PositionSerializer(serializers.ModelSerializer):
 
 
 class PersonSerializer(serializers.ModelSerializer):
-    position = PositionSerializer(many=False, read_only=False)
+    # position = PositionSerializer(many=False, read_only=True)
 
     class Meta:
         model = Person
-        fields = ('id', 'name', 'family', 'position', 'mother', 'father')
+        # fields = ('id', 'name', 'family', 'position', 'mother', 'father', 'gender')
+        fields = ('id', 'name', 'family', 'mother', 'father', 'gender')
         depth = 2
 
 

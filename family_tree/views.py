@@ -1,9 +1,17 @@
+from django.http.multipartparser import MultiPartParser
 from django.shortcuts import render
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView, get_object_or_404
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 from .serializer import PositionSerializer, PersonSerializer
 from .models import Person, Position
+
+
+def home(request):
+    # return render(request, 'family_tree/home.html')
+    return render(request, 'family_tree/index.pug')
+
 
 
 class ListListObjects(ListCreateAPIView):
@@ -35,6 +43,7 @@ class SinglePositionView(RetrieveUpdateDestroyAPIView):
 
 
 class PersonView(ListListObjects):
+    parser_classes = (JSONParser,)
     # search_fields = ['name']
     # filter_backends = (filters.SearchFilter,)
     queryset = Person.objects.all()

@@ -1,0 +1,65 @@
+include family_tree/application.pug
+nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.shadow.pl-50.pr-50.pt-0.pb-0(role="navigation")
+    ul.menu.cf
+        li
+            a Меню
+            ul.submenu
+                li
+                    a#create_tree Построить "дерево"
+                li
+                    a#exit Выход
+        li
+            a Человек
+            ul.submenu
+                li
+                    a.person.add Добавить
+                li
+                    a.person.update Редактировать
+                li
+                    a.person.delete Удалить
+                li
+                    a#person_search Поиск
+        li
+            a Город
+            ul.submenu
+                li
+                    a.sity.add Добавить
+                li
+                    a.sity.update Редактировать
+                li
+                    a.sity.delete Удалить
+                li
+                    a#sity_search Поиск
+
+    div.modal#Person_modal(role="dialog")
+        div.modal-dialog.modal-lg(role="document")
+            div.modal-content
+                div.modal-header
+                   h5.name='Человек'
+                   button.modal_close_window(type="button", data-dismiss="modal", aria-label="Close")
+                       span(aria-hidden="true")&times;
+                div.modal-body
+                    .card-body.condition(style="padding: 0px")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Фамилия'
+                            input.person_family(type="text", size="25")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Имя'
+                            input.person_name(type="text", size="25")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Отчество'
+                            input.person_midlename(type="text", size="25")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Пол'
+                            select#person_gender
+                                option(value="M")="муж"
+                                option(value="F")="жен"
+                    p
+                    button.btn-ttronix1#person_ok_window(type="button", data-dismiss="modal", aria-label='code', title="OK")
+                        span=" OK "
+
+    //button.btn-ttronix1.archive_select_points(href="#" type="submit")="Запрос"
