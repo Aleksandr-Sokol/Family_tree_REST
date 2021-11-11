@@ -26,18 +26,17 @@ class ListListObjects(ListCreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, headers=headers)
 
+    def get_queryset(self):
+        params = self.request.query_params.dict()
+        return super().get_queryset().filter(**params).all()
+
 
 class PositionView(ListListObjects):
     search_fields = ['sity', 'id']
     # filter_backends = (filters.SearchFilter,)
-    # queryset = Position.objects.all()
+    queryset = Position.objects.all()
     serializer_class = PositionSerializer
     # permission_classes = [MyPermissions]
-
-    def get_queryset(self):
-        params = self.request.query_params.dict()
-        queryset = Position.objects.filter(**params).all()
-        return queryset
 
 
 class SinglePositionView(RetrieveUpdateDestroyAPIView):
@@ -50,11 +49,6 @@ class PersonView(ListListObjects):
     parser_classes = (JSONParser,)
     search_fields = ['gender']
     # filter_backends = (filters.SearchFilter,)
-    # queryset = Person.objects.all()
+    queryset = Person.objects.all()
     serializer_class = PersonSerializer
     # permission_classes = [MyPermissions]
-
-    def get_queryset(self):
-        params = self.request.query_params.dict()
-        queryset = Person.objects.filter(**params).all()
-        return queryset
