@@ -9,7 +9,6 @@ from .models import Person, Position
 
 
 def home(request):
-    # return render(request, 'family_tree/home.html')
     return render(request, 'family_tree/index.pug')
 
 
@@ -29,11 +28,16 @@ class ListListObjects(ListCreateAPIView):
 
 
 class PositionView(ListListObjects):
-    # search_fields = ['name']
+    search_fields = ['sity', 'id']
     # filter_backends = (filters.SearchFilter,)
-    queryset = Position.objects.all()
+    # queryset = Position.objects.all()
     serializer_class = PositionSerializer
     # permission_classes = [MyPermissions]
+
+    def get_queryset(self):
+        params = self.request.query_params.dict()
+        queryset = Position.objects.filter(**params).all()
+        return queryset
 
 
 class SinglePositionView(RetrieveUpdateDestroyAPIView):
@@ -44,8 +48,13 @@ class SinglePositionView(RetrieveUpdateDestroyAPIView):
 
 class PersonView(ListListObjects):
     parser_classes = (JSONParser,)
-    # search_fields = ['name']
+    search_fields = ['gender']
     # filter_backends = (filters.SearchFilter,)
-    queryset = Person.objects.all()
+    # queryset = Person.objects.all()
     serializer_class = PersonSerializer
     # permission_classes = [MyPermissions]
+
+    def get_queryset(self):
+        params = self.request.query_params.dict()
+        queryset = Person.objects.filter(**params).all()
+        return queryset
