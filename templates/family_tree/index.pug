@@ -58,6 +58,12 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                             select#person_gender
                                 option(value="M")="муж"
                                 option(value="F")="жен"
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Место рождения. Страна'
+                                    select.marker_type_change#birthplace_country_select(style="width: 150px")
+                                    span='Город'
+                                    select.marker_type_change#birthplace_sity_select(style="width: 150px")
                     p
                     button.btn-ttronix1#person_ok_window(type="button", data-dismiss="modal", aria-label='code', title="OK")
                         span=" OK "
