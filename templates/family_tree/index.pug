@@ -2,30 +2,30 @@ include family_tree/application.pug
 nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.shadow.pl-50.pr-50.pt-0.pb-0(role="navigation")
     ul.menu.cf
         li
-            a Меню
+            div Меню
             ul.submenu
                 li
-                    a#create_tree Построить "дерево"
+                    #create_tree Построить "дерево"
                 li
-                    a#exit Выход
+                    #exit Выход
         li
-            a Человек
+            div Человек
             ul.submenu
                 li
-                    a.person.add Добавить
+                    .person.add Добавить
                 li
-                    a.person.update Редактировать
+                    .person.update Редактировать
                 li
-                    a.person.delete Удалить
+                    .person.delete Удалить
                 li
-                    a#person_search Поиск
+                    #person_search Поиск
         li
-            a Город
+            div Город
             ul.submenu
                 li
-                    a.sity.get Список
+                    .sity.get Список
                 li
-                    a#sity_search Поиск
+                    #sity_search Поиск
 
     div.modal#Person_modal(role="dialog")
         div.modal-dialog.modal-lg(role="document")
