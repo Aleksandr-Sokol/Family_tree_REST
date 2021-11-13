@@ -35,6 +35,12 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                    button.modal_close_window(type="button", data-dismiss="modal", aria-label="Close")
                        span(aria-hidden="true")&times;
                 div.modal-body
+                    .card-body.condition#search_people_area(style="padding: 0px")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                select.marker_type_change#find_peoples(style="width: 150px")
+                                button.btn-ttronix1#find_peoples_button(type="button", data-dismiss="modal", aria-label='code', title="Search")
+                                    span="Поиск"
                     .card-body.condition(style="padding: 0px")
                         .input-group.mb-2
                             .input-group-prepend
