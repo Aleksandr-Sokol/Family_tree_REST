@@ -45,6 +45,11 @@ $(document).ready(function() {
 
     //    Открытие окна добавление человека
     $(document).on('click', '.person', function () {
+        // Если это редактирование или удаление нужен блок поиска, инеча его нужно скрыть
+        if ($(this).hasClass('add'))
+            $('#search_people_area').hide()
+        else
+            $('#search_people_area').show()
         // Список доступных стран городов
         let country_dict = get_countries();
         let sity_dict;
