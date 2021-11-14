@@ -15,10 +15,6 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                     .person.add Добавить
                 li
                     .person.update Редактировать
-                li
-                    .person.delete Удалить
-                li
-                    #person_search Поиск
         li
             div Город
             ul.submenu
@@ -35,7 +31,7 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                    button.modal_close_window(type="button", data-dismiss="modal", aria-label="Close")
                        span(aria-hidden="true")&times;
                 div.modal-body
-                    .card-body.condition#search_people_area(style="padding: 0px")
+                    .card-body.condition.search_people_area(style="padding: 0px")
                         .input-group.mb-2
                             .input-group-prepend
                                 select.marker_type_change#find_peoples(style="width: 150px")
@@ -81,5 +77,5 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                     p
                     button.btn-ttronix1#person_ok_window(type="button", data-dismiss="modal", aria-label='code', title="OK")
                         span=" OK "
-
-    //button.btn-ttronix1.archive_select_points(href="#" type="submit")="Запрос"
+                    button.btn-ttronix1#person_delete_window.search_people_area(type="button", data-dismiss="modal", aria-label='code', title="Delete")
+                        span="Удалить"
