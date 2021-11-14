@@ -12,7 +12,6 @@ def home(request):
     return render(request, 'family_tree/index.pug')
 
 
-
 class ListListObjects(ListCreateAPIView):
     '''
     Переопределяет метод create класса ListCreateAPIView
@@ -49,6 +48,12 @@ class PersonView(ListListObjects):
     parser_classes = (JSONParser,)
     search_fields = ['gender']
     # filter_backends = (filters.SearchFilter,)
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+    # permission_classes = [MyPermissions]
+
+
+class SinglePersonView(RetrieveUpdateDestroyAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
     # permission_classes = [MyPermissions]
