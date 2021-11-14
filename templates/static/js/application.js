@@ -16,10 +16,7 @@ $(document).ready(function() {
 	    return country_dict;
     }
 
-    function get_person_by_gender(G){
-        data = {}
-        if (G != 'None')
-            data = { 'gender': G}
+    function get_person(data){
         let url = '/person';
         let person_dict;
         $.ajax({
@@ -36,20 +33,58 @@ $(document).ready(function() {
 	    return person_dict;
     }
 
-    console.log('start Application')
+    // Очистка полей Фамилии, имени, отчества
+    function clear_fields(){
+        $($('#Person_modal').find('.person_family')[0]).val('')
+        $($('#Person_modal').find('.person_name')[0]).val('')
+        $($('#Person_modal').find('.person_midlename')[0]).val('')
+    }
 
     // закрытии модального окна
     $(document).on('click', '.modal_close_window', function (e) {
         $(this).parent().parent().parent().parent().hide()
     })
 
+    // Удаление человека из базы
+    $(document).on('click', '#person_delete_window', function (e) {
+        let select_person_id = $('#find_peoples').find(":selected").val()
+        let url = '/person/' + select_person_id;
+        $.ajax({
+	       type: 'DELETE',
+	       url: url,
+           async: false,
+	       processData: false,  // tell jQuery not to process the data
+           contentType: false,  // tell jQuery not to set contentType
+	       success: function(data, status){
+                 console.log('has delete')
+	       }
+	    });
+        clear_fields();  // Очистка полей Фамилии, имени, отчества
+    })
+
+    // Клик по выбранному человеку
+    $(document).on('change', '#find_peoples', function (e) {
+        let select_person_id = $(this).find(":selected").val()
+        let select_person = get_person({'id': select_person_id})[0]
+        let gender = select_person['gender']
+
+        $($('#Person_modal').find('.person_family')[0]).val(select_person['family'])
+        $($('#Person_modal').find('.person_name')[0]).val(select_person['name'])
+        $($('#Person_modal').find('.person_midlename')[0]).val(select_person['midlename'])
+
+        $($('#Person_modal').find('#person_gender option[value=' + gender + ']')[0]).attr('selected','selected');
+
+        console.log(select_person)
+    })
+
     //    Открытие окна добавление человека
     $(document).on('click', '.person', function () {
+        clear_fields();  // Очистка полей Фамилии, имени, отчеств
         // Если это редактирование или удаление нужен блок поиска, инеча его нужно скрыть
         if ($(this).hasClass('add'))
-            $('#search_people_area').hide()
+            $('.search_people_area').hide()
         else
-            $('#search_people_area').show()
+            $('.search_people_area').show()
         // Список доступных стран городов
         let country_dict = get_countries();
         let sity_dict;
@@ -93,7 +128,7 @@ $(document).ready(function() {
         $('option[value="Russia"]').attr('selected', 'selected').parent().focus();
         $('option[value="Perm"]').attr('selected', 'selected').parent().focus();
         // Люди мужского пола
-        let mans = get_person_by_gender('M')
+        let mans = get_person({'gender': 'M'})
         for (let i = 0; i < mans.length; i++) {
             let opt = document.createElement('option');
             opt.value = mans[i]['id'];
@@ -101,7 +136,7 @@ $(document).ready(function() {
             person_father_select.appendChild(opt);
         }
         // Люди женского пола
-        let womens = get_person_by_gender('F')
+        let womens = get_person({'gender': 'F'})
         for (let i = 0; i < womens.length; i++) {
             let opt = document.createElement('option');
             opt.value = womens[i]['id'];
@@ -109,7 +144,7 @@ $(document).ready(function() {
             person_mother_select.appendChild(opt);
         }
         // Все Люди
-        let peoples = get_person_by_gender('None')
+        let peoples = get_person({})
         for (let i = 0; i < peoples.length; i++) {
             let opt = document.createElement('option');
             opt.value = peoples[i]['id'];
@@ -142,7 +177,7 @@ $(document).ready(function() {
             'family': family,
             'name': name,
             'gender': gender,
-            'midlename': midlename,
+            'middle_name': midlename,
             "mother_num": mother_id,
             "father_num": father_id,
             "spouse_num": spouse_id,
@@ -165,6 +200,35 @@ $(document).ready(function() {
 	      }
 	    });
 
+    })
+
+    // Поиск людей
+    $(document).on('click', '#find_peoples_button', function (e) {
+        $("#find_peoples").empty();
+        let fined_peoples = document.getElementById('find_peoples');
+        let family = $($('#Person_modal').find('.person_family')[0]).val()
+        let name = $($('#Person_modal').find('.person_name')[0]).val()
+        let midlename = $($('#Person_midlename').find('.person_midlename')[0]).val()
+        let gender = $('#person_gender').find(":selected").val()
+        let country = $('#birthplace_country_select').find(":selected").val();
+        let sity = $('#birthplace_sity_select').find(":selected").val();
+        let data = {}
+        if (!family == '')
+            data['family'] = family
+        if (!name == '')
+            data['name'] = name
+        if (!midlename == '')
+            data['middle_name'] = midlename
+        if (!gender == '')
+            data['gender'] = gender
+        let peoples = get_person(data)
+        for (let i = 0; i < peoples.length; i++) {
+            let opt = document.createElement('option');
+            opt.setAttribute('class',  'find_one_person_select');
+            opt.value = peoples[i]['id'];
+            opt.innerHTML = peoples[i]['family'] + ' ' + peoples[i]['name'];
+            fined_peoples.appendChild(opt);
+        }
     })
 
 })
