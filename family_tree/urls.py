@@ -7,7 +7,7 @@ from . import form_view
 app_name = "family_tree"
 # app_name will help us do a reverse look-up latter.
 urlpatterns = [
-    path('position/', PositionView.as_view()),
+    path('position', PositionView.as_view()),
     path('position/<int:pk>', SinglePositionView.as_view()),
     path('person', PersonView.as_view()),
     path('person/<int:pk>', SinglePersonView.as_view()),
