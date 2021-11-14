@@ -35,8 +35,9 @@ class PersonSerializer(serializers.ModelSerializer):
                   )
         depth = 2
 
-    def create(self, validated_data):
-        validated_data_copy = validated_data.copy()
+    @staticmethod
+    def change_validated_data(vd):
+        validated_data_copy = vd.copy()
         position = validated_data_copy.pop('position')
         mother_id = validated_data_copy.pop('mother_num')
         father_id = validated_data_copy.pop('father_num')
@@ -60,10 +61,16 @@ class PersonSerializer(serializers.ModelSerializer):
         validated_data_copy['father'] = father
         validated_data_copy['current_spouse'] = spouse
         validated_data_copy['position'] = position_filter[0]
+        return validated_data_copy
+
+    def create(self, validated_data):
+        validated_data_copy = self.change_validated_data(validated_data)
         person = Person.objects.create(**validated_data_copy)
         person.save()
         return person
 
     def update(self, instance, validated_data):
+        validated_data_copy = self.change_validated_data(validated_data)
+        Person.objects.filter(pk=instance.id).update(**validated_data_copy)
         return instance
 
