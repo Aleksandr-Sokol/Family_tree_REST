@@ -7,7 +7,6 @@ from .models import Person, Position
 from django.core.exceptions import ObjectDoesNotExist
 
 
-
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
@@ -22,7 +21,18 @@ class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ('id', 'name', 'family', 'position', 'mother', 'father', 'gender', 'mother_num', 'father_num', 'spouse_num')
+        fields = ('id',
+                  'name',
+                  'family',
+                  'middle_name',
+                  'position',
+                  'mother',
+                  'father',
+                  'gender',
+                  'mother_num',
+                  'father_num',
+                  'spouse_num',
+                  )
         depth = 2
 
     def create(self, validated_data):
