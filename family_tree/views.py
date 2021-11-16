@@ -27,7 +27,7 @@ class ListListObjects(ListCreateAPIView):
 
     def get_queryset(self):
         params = self.request.query_params.dict()
-        return super().get_queryset().filter(**params).all()
+        return super().get_queryset().filter(**params).order_by('family').all()
 
 
 class PositionView(ListListObjects):
