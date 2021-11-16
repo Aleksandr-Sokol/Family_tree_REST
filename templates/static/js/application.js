@@ -49,6 +49,42 @@ $(document).ready(function() {
 	    return position_dict;
     }
 
+    function get_all_person_in_base(){
+        $("#table_all_person_in_base").empty();
+        let persons = get_person({})
+        console.log(persons)
+        for (let i = 0; i < persons.length; i++) {
+            let person = persons[i];
+            let tr = document.createElement('tr');
+            tr.setAttribute('data-toggle', 'modal');
+            let td1 = document.createElement('td');
+            td1.innerHTML = person['family'];
+            tr.appendChild(td1);
+            let td2 = document.createElement('td');
+            td2.innerHTML = person['name'];
+            tr.appendChild(td2);
+            let td3 = document.createElement('td');
+            td3.innerHTML = person['middle_name'];
+            tr.appendChild(td3);
+            let td4 = document.createElement('td');
+            td4.innerHTML = person['gender'];
+            tr.appendChild(td4)
+            let td5 = document.createElement('td');
+            td5.innerHTML = person['position']['country'] + ', ' + person['position']['sity'];
+            tr.appendChild(td5)
+            let td6 = document.createElement('td');
+            td6.innerHTML = person['birth_date'];
+            tr.appendChild(td6)
+            let td7 = document.createElement('td');
+            td7.innerHTML = person['information'];
+            tr.appendChild(td7)
+
+            document.getElementById("table_all_person_in_base").appendChild(tr);
+        }
+
+    }
+    get_all_person_in_base()
+
     // Очистка полей Фамилии, имени, отчества
     function clear_fields(){
         $($('#Person_modal').find('.person_family')[0]).val('')
@@ -76,6 +112,7 @@ $(document).ready(function() {
 	       }
 	    });
         clear_fields();  // Очистка полей Фамилии, имени, отчества
+        get_all_person_in_base() // Перерисовка таблицы
     })
 
     // Клик по выбранному человеку
@@ -208,6 +245,7 @@ $(document).ready(function() {
                   data: JSON.stringify(json_table),
                    dataType: 'json',
                   success: function(data, status){
+                        get_all_person_in_base() // Перерисовка таблицы
                         $('#Person_modal').toggle();
                   }
                 });
@@ -225,6 +263,7 @@ $(document).ready(function() {
               data: JSON.stringify(json_table),
                dataType: 'json',
               success: function(data, status){
+                    get_all_person_in_base() // Перерисовка таблицы
                     $('#Person_modal').toggle();
               }
             });
