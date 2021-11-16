@@ -33,6 +33,22 @@ $(document).ready(function() {
 	    return person_dict;
     }
 
+    function get_position(){
+        let url = '/position';
+        let position_dict;
+        $.ajax({
+	       type: 'GET',
+	       url: url,
+           async: false,
+	       processData: false,  // tell jQuery not to process the data
+           contentType: false,  // tell jQuery not to set contentType
+	       success: function(data, status){
+                 position_dict =  data
+	       }
+	    });
+	    return position_dict;
+    }
+
     // Очистка полей Фамилии, имени, отчества
     function clear_fields(){
         $($('#Person_modal').find('.person_family')[0]).val('')
@@ -67,14 +83,10 @@ $(document).ready(function() {
         let select_person_id = $(this).find(":selected").val()
         let select_person = get_person({'id': select_person_id})[0]
         let gender = select_person['gender']
-
         $($('#Person_modal').find('.person_family')[0]).val(select_person['family'])
         $($('#Person_modal').find('.person_name')[0]).val(select_person['name'])
         $($('#Person_modal').find('.person_midlename')[0]).val(select_person['midlename'])
-
         $($('#Person_modal').find('#person_gender option[value=' + gender + ']')[0]).attr('selected','selected');
-
-        console.log(select_person)
     })
 
     //    Открытие окна добавление человека
@@ -152,6 +164,8 @@ $(document).ready(function() {
             person_current_spouse_select.appendChild(opt);
         }
         //        Открыть модальное окно
+        if ($(this).hasClass('update'))
+            $('#person_ok_window').addClass('update')
         $('#Person_modal').toggle();
     })
 
@@ -159,7 +173,7 @@ $(document).ready(function() {
     $(document).on('click', '#person_ok_window', function () {
         let family = $($('#Person_modal').find('.person_family')[0]).val()
         let name = $($('#Person_modal').find('.person_name')[0]).val()
-        let midlename = $($('#Person_midlename').find('.person_midlename')[0]).val()
+        let midlename = $($('#Person_modal').find('.person_midlename')[0]).val()
         let gender = $('#person_gender').find(":selected").val()
         let country = $('#birthplace_country_select').find(":selected").val();
         let sity = $('#birthplace_sity_select').find(":selected").val();
@@ -172,7 +186,6 @@ $(document).ready(function() {
         let spouse_id = $('#person_current_spouse_select').find(":selected").val();
         if (!!!spouse_id)
             spouse_id = '-1'
-
         let json_table = {
             'family': family,
             'name': name,
@@ -185,21 +198,37 @@ $(document).ready(function() {
                          'sity': sity,
                          },
         }
-        console.log(JSON.stringify(json_table))
-        $.ajax({
-	      headers: {
-	        'Content-Type': 'application/json',
-//	        "Authorization": "Basic " + btoa('alexander' + ":" + '123')
-	      },
-	      type: 'POST',
-	      url: '/person',
-	      data: JSON.stringify(json_table),
-	       dataType: 'json',
-	      success: function(data, status){
-                $('#Person_modal').toggle();
-	      }
-	    });
-
+        if ($(this).hasClass('update')){
+            let select_person_id = $('#find_peoples').find(":selected").val()
+            if (!!select_person_id) {
+                $.ajax({
+                  headers: {'Content-Type': 'application/json', },
+                  type: 'PUT',
+                  url: '/person/' + select_person_id,
+                  data: JSON.stringify(json_table),
+                   dataType: 'json',
+                  success: function(data, status){
+                        $('#Person_modal').toggle();
+                  }
+                });
+            }
+        }
+        else{
+            console.log('Add')
+            $.ajax({
+              headers: {
+                'Content-Type': 'application/json',
+    //	        "Authorization": "Basic " + btoa('alexander' + ":" + '123')
+              },
+              type: 'POST',
+              url: '/person',
+              data: JSON.stringify(json_table),
+               dataType: 'json',
+              success: function(data, status){
+                    $('#Person_modal').toggle();
+              }
+            });
+        }
     })
 
     // Поиск людей
@@ -229,6 +258,30 @@ $(document).ready(function() {
             opt.innerHTML = peoples[i]['family'] + ' ' + peoples[i]['name'];
             fined_peoples.appendChild(opt);
         }
+    })
+
+    //    Открытие окна списка мест
+    $(document).on('click', '.sity', function () {
+        let positions = get_position();
+        $("#Position_modal_table").empty();
+        for (let i = 0; i < positions.length; i++) {
+            let position = positions[i];
+            let tr = document.createElement('tr');
+            tr.setAttribute('data-toggle', 'modal');
+//            tr.setAttribute('class', 'battery_row modal-trigger error-message table-message')
+            tr.setAttribute('position_id', position['id'])
+            let td1 = document.createElement('td');
+            td1.innerHTML = position['country'];
+            tr.appendChild(td1);
+            let td2 = document.createElement('td');
+            td2.innerHTML = position['sity'];
+            tr.appendChild(td2);
+            let td3 = document.createElement('td');
+            td3.innerHTML = '0';
+            tr.appendChild(td3);
+            document.getElementById("Position_modal_table").appendChild(tr);
+        }
+        $('#Position_modal').toggle();
     })
 
 })
