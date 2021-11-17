@@ -12,6 +12,7 @@ urlpatterns = [
     path('person', PersonView.as_view()),
     path('person/<int:pk>', SinglePersonView.as_view()),
     path('', form_view.index, name='index'),
+    path('tree/', form_view.tree, name='tree'),
     # path('author/', AuthorView.as_view()),
     # path('author/<int:pk>', SingleAuthorView.as_view()),
     # path('journal/', JournalView.as_view()),

@@ -1,0 +1,59 @@
+include family_tree/application_tree.pug
+nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.shadow.pl-50.pr-50.pt-0.pb-0(role="navigation")
+    h1='Создание семейного древа'
+    button.btn-ttronix1#plot_modal_for_create_tree(type="button", data-dismiss="modal", aria-label='code', title="Plot")
+        span="Plot"
+
+    div.modal#person_modal_for_create_tree(role="dialog")
+        div.modal-dialog.modal-lg(role="document")
+            div.modal-content
+                div.modal-header
+                   h5.name='Человек'
+                   button.modal_close_window(type="button", data-dismiss="modal", aria-label="Close")
+                       span(aria-hidden="true")&times;
+                div.modal-body
+                    .card-body.condition.search_people_area(style="padding: 0px")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                select.marker_type_change#find_peoples_create_tree(style="width: 150px")
+                                button.btn-ttronix1#find_peoples_button_create_tree(type="button", data-dismiss="modal", aria-label='code', title="Search")
+                                    span="Поиск"
+                                button.btn-ttronix1#plot_modal_for_create_tree_ok(type="button", data-dismiss="modal", aria-label='code', title="Plot")
+                                    span="Plot"
+                    .card-body.condition(style="padding: 0px")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Фамилия'
+                            input.person_family(type="text", size="25")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Имя'
+                            input.person_name(type="text", size="25")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Отчество'
+                            input.person_midlename(type="text", size="25")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Пол'
+                            select#Plot_person_gender
+                                option(value="M")="муж"
+                                option(value="F")="жен"
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Место рождения. Страна'
+                                    select.marker_type_change#birthplace_country_select(style="width: 150px")
+                                    span='Город'
+                                    select.marker_type_change#birthplace_sity_select(style="width: 150px")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Отец: '
+                            select#Plot_person_father_select
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Мать: '
+                            select#Plot_person_mother_select
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Супруг/ Супруга: '
+                            select#Plot_person_current_spouse_select
