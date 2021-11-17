@@ -1,6 +1,9 @@
 from django.db.models import Model, CASCADE, SET_NULL, PROTECT
-from django.db.models import ForeignKey, ManyToManyField
+from django.db.models import ForeignKey, OneToOneField, ManyToManyField
 from django.db.models import CharField, EmailField, DateField, JSONField
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Human(Model):
@@ -46,7 +49,7 @@ class Person(Human):
                         blank=True,
                         null=True,
                         related_name='children_of_father')
-    current_spouse = ForeignKey('self',
+    current_spouse = OneToOneField('self',
                         on_delete=SET_NULL,
                         blank=True,
                         null=True,
@@ -66,3 +69,9 @@ class Person(Human):
 
     def __str__(self):
         return f'{self.family} {self.name}'
+
+
+@receiver(post_save, sender=Person)
+def update_spouse(sender, instance, **kwargs):
+    if instance.current_spouse:
+        Person.objects.filter(pk=instance.current_spouse.id).update(current_spouse=instance)
