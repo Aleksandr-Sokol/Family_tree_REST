@@ -22,6 +22,7 @@ $(document).ready(function() {
         $.ajax({
 	       type: 'GET',
 	       url: url,
+	       headers: {Authorization: 'Bearer ' + readCookie('jwt')},
 	       data: jQuery.param(data) ,
            async: false,
 	       processData: false,  // tell jQuery not to process the data
@@ -39,6 +40,7 @@ $(document).ready(function() {
         $.ajax({
 	       type: 'GET',
 	       url: url,
+	       headers: {Authorization: 'Bearer ' + readCookie('jwt')},
            async: false,
 	       processData: false,  // tell jQuery not to process the data
            contentType: false,  // tell jQuery not to set contentType
@@ -50,40 +52,54 @@ $(document).ready(function() {
     }
 
     function get_all_person_in_base(){
-        $("#table_all_person_in_base").empty();
-        let persons = get_person({})
-        console.log(persons)
-        for (let i = 0; i < persons.length; i++) {
-            let person = persons[i];
-            let tr = document.createElement('tr');
-            tr.setAttribute('data-toggle', 'modal');
-            let td1 = document.createElement('td');
-            td1.innerHTML = person['family'];
-            tr.appendChild(td1);
-            let td2 = document.createElement('td');
-            td2.innerHTML = person['name'];
-            tr.appendChild(td2);
-            let td3 = document.createElement('td');
-            td3.innerHTML = person['middle_name'];
-            tr.appendChild(td3);
-            let td4 = document.createElement('td');
-            td4.innerHTML = person['gender'];
-            tr.appendChild(td4)
-            let td5 = document.createElement('td');
-            td5.innerHTML = person['position']['country'] + ', ' + person['position']['sity'];
-            tr.appendChild(td5)
-            let td6 = document.createElement('td');
-            td6.innerHTML = person['birth_date'];
-            tr.appendChild(td6)
-            let td7 = document.createElement('td');
-            td7.innerHTML = person['information'];
-            tr.appendChild(td7)
-
-            document.getElementById("table_all_person_in_base").appendChild(tr);
+        if (document.location.pathname == '/'){
+            $("#table_all_person_in_base").empty();
+            let persons = get_person({})
+            if (!!persons){
+                for (let i = 0; i < persons.length; i++) {
+                    let person = persons[i];
+                    let tr = document.createElement('tr');
+                    tr.setAttribute('data-toggle', 'modal');
+                    let td1 = document.createElement('td');
+                    td1.innerHTML = person['family'];
+                    tr.appendChild(td1);
+                    let td2 = document.createElement('td');
+                    td2.innerHTML = person['name'];
+                    tr.appendChild(td2);
+                    let td3 = document.createElement('td');
+                    td3.innerHTML = person['middle_name'];
+                    tr.appendChild(td3);
+                    let td4 = document.createElement('td');
+                    td4.innerHTML = person['gender'];
+                    tr.appendChild(td4)
+                    let td5 = document.createElement('td');
+                    td5.innerHTML = person['position']['country'] + ', ' + person['position']['sity'];
+                    tr.appendChild(td5)
+                    let td6 = document.createElement('td');
+                    td6.innerHTML = person['birth_date'];
+                    tr.appendChild(td6)
+                    let td7 = document.createElement('td');
+                    td7.innerHTML = person['information'];
+                    tr.appendChild(td7)
+                    document.getElementById("table_all_person_in_base").appendChild(tr);
+                }
+            }
         }
-
     }
+
     get_all_person_in_base()
+
+    // получения значения печеньки по имени
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
 
     // Очистка полей Фамилии, имени, отчества
     function clear_fields(){
@@ -92,9 +108,34 @@ $(document).ready(function() {
         $($('#Person_modal').find('.person_midlename')[0]).val('')
     }
 
+    // Войти
+    $(document).on('click', '#registration_in', function (e) {
+        let data =  {
+            "username": $('#registration_login').val(),
+            "password": $('#registration_password').val()
+        }
+        let url = '/api/token/';
+        $.ajax({
+	       type: 'POST',
+	       url: url,
+	       data: jQuery.param(data) ,
+           async: false,
+//	       processData: false,  // tell jQuery not to process the data
+//           contentType: false,  // tell jQuery not to set contentType
+	       success: function(data, status){
+               document.cookie = 'jwt=' + data['access'];
+               get_all_person_in_base();
+	       }
+	    });
+    })
+
     // закрытии модального окна
     $(document).on('click', '.modal_close_window', function (e) {
         $(this).parent().parent().parent().parent().hide()
+    })
+
+    $(document).on('click', '#create_tree', function (e) {
+        window.open('tree')
     })
 
     // Удаление человека из базы
@@ -104,6 +145,7 @@ $(document).ready(function() {
         $.ajax({
 	       type: 'DELETE',
 	       url: url,
+	       headers: {Authorization: 'Bearer ' + readCookie('jwt')},
            async: false,
 	       processData: false,  // tell jQuery not to process the data
            contentType: false,  // tell jQuery not to set contentType
@@ -239,9 +281,13 @@ $(document).ready(function() {
             let select_person_id = $('#find_peoples').find(":selected").val()
             if (!!select_person_id) {
                 $.ajax({
-                  headers: {'Content-Type': 'application/json', },
+                  headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + readCookie('jwt'),
+                  },
                   type: 'PUT',
                   url: '/person/' + select_person_id,
+
                   data: JSON.stringify(json_table),
                    dataType: 'json',
                   success: function(data, status){
@@ -257,6 +303,7 @@ $(document).ready(function() {
               headers: {
                 'Content-Type': 'application/json',
     //	        "Authorization": "Basic " + btoa('alexander' + ":" + '123')
+                'Authorization': 'Bearer ' + readCookie('jwt'),
               },
               type: 'POST',
               url: '/person',
