@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,6 +26,7 @@ SECRET_KEY = 'django-insecure-74=z)i2tpj#m4u1vc5ek7_qfk!a!-$m&m8p7t&kjg3f%6ftz7e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['127.0.0.1']
 ALLOWED_HOSTS = []
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
@@ -44,9 +46,19 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     # other settings...
-    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [],
 }
+
+SIMPLE_JWT = {  # Время жизни ключа
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=6),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,4 +154,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-APPEND_SLASH=False
+# APPEND_SLASH = True
