@@ -12,7 +12,7 @@ class Human(Model):
     middle_name = CharField(max_length=120, null=True, blank=True)
 
     class Meta:
-        abstract = True # Important
+        abstract = True  # Important
 
 
 class Position(Model):
@@ -50,10 +50,10 @@ class Person(Human):
                         null=True,
                         related_name='children_of_father')
     current_spouse = OneToOneField('self',
-                        on_delete=SET_NULL,
-                        blank=True,
-                        null=True,
-                        related_name='spouse')
+                                   on_delete=SET_NULL,
+                                   blank=True,
+                                   null=True,
+                                   related_name='spouse')
 
     # last_spouse = ManyToManyField('self',
     #                          blank=True,
