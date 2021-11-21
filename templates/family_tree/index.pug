@@ -21,6 +21,13 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                 li
                     .sity.get Список
 
+        .registration(style='float:left; margin-left: 25px; margin-top: 10px')
+            input#registration_login(type="text", size="10", style='float:left')
+            input#registration_password(type="password", size="10", style='float:left')
+            .registration_name(style='color: black; float:left')=''
+            button.btn-ttronix1#registration_in(type="button", data-dismiss="modal", aria-label='code', title="Войти")
+                span="Войти"
+
         div(style='margin-top: 10%')
             h2(style='color: black')='Список людей в базе данных'
         div
@@ -36,6 +43,7 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                         th="Доп. информация"
                 tbody#table_all_person_in_base
                     td
+
 
     div.modal#Person_modal(role="dialog")
         div.modal-dialog.modal-lg(role="document")
