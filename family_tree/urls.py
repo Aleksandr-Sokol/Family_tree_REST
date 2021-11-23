@@ -3,9 +3,8 @@ from .views import PositionView, SinglePositionView, PersonView, SinglePersonVie
 
 from . import form_view
 
-
 app_name = "family_tree"
-# app_name will help us do a reverse look-up latter.
+
 urlpatterns = [
     path('position', PositionView.as_view()),
     path('position/<int:pk>', SinglePositionView.as_view()),
@@ -13,9 +12,5 @@ urlpatterns = [
     path('person/<int:pk>', SinglePersonView.as_view()),
     path('', form_view.index, name='index'),
     path('tree/', form_view.tree, name='tree'),
-    # path('author/', AuthorView.as_view()),
-    # path('author/<int:pk>', SingleAuthorView.as_view()),
-    # path('journal/', JournalView.as_view()),
-    # path('journal/<int:pk>', SingleJournalView.as_view()),
     # path('upload/', FileUploadView.as_view())
 ]
