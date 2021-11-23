@@ -2,14 +2,11 @@ from django.http.multipartparser import MultiPartParser
 from django.shortcuts import render
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView, get_object_or_404
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .serializer import PositionSerializer, PersonSerializer
 from .models import Person, Position
-
-
-def home(request):
-    return render(request, 'family_tree/index.pug')
 
 
 class ListListObjects(ListCreateAPIView):
@@ -17,6 +14,7 @@ class ListListObjects(ListCreateAPIView):
     Переопределяет метод create класса ListCreateAPIView
     для создания через Post запрос списка объектов
     '''
+
     def create(self, request, *args, **kwargs):
         many = isinstance(request.data, list)
         serializer = self.get_serializer(data=request.data, many=many)
@@ -27,7 +25,7 @@ class ListListObjects(ListCreateAPIView):
 
     def get_queryset(self):
         params = self.request.query_params.dict()
-        return super().get_queryset().filter(**params).order_by('family').all()
+        return super().get_queryset().filter(**params).all()
 
 
 class PositionView(ListListObjects):
@@ -35,25 +33,22 @@ class PositionView(ListListObjects):
     # filter_backends = (filters.SearchFilter,)
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
-    # permission_classes = [MyPermissions]
 
 
 class SinglePositionView(RetrieveUpdateDestroyAPIView):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
-    # permission_classes = [MyPermissions]
 
 
 class PersonView(ListListObjects):
     parser_classes = (JSONParser,)
     search_fields = ['gender']
-    # filter_backends = (filters.SearchFilter,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-    # permission_classes = [MyPermissions]
+    permission_classes = [IsAuthenticated]
 
 
 class SinglePersonView(RetrieveUpdateDestroyAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-    # permission_classes = [MyPermissions]
+    permission_classes = [IsAuthenticated]
