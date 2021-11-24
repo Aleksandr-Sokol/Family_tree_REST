@@ -51,6 +51,7 @@ $(document).ready(function() {
 	    return position_dict;
     }
 
+
     function get_all_person_in_base(){
         if (document.location.pathname == '/'){
             $("#table_all_person_in_base").empty();
@@ -136,6 +137,21 @@ $(document).ready(function() {
 
     $(document).on('click', '#create_tree', function (e) {
         window.open('tree')
+    })
+
+    $(document).on('click', '#to_email', function (e) {
+        let url = '/send_peoples';
+        $.ajax({
+	       type: 'GET',
+	       url: url,
+	       headers: {Authorization: 'Bearer ' + readCookie('jwt')},
+           async: true,
+	       processData: false,  // tell jQuery not to process the data
+           contentType: false,  // tell jQuery not to set contentType
+	       success: function(data, status){
+                 console.log('send email')
+	       }
+	    });
     })
 
     // Удаление человека из базы
