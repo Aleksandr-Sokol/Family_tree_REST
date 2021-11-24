@@ -14,3 +14,14 @@ def persons_count():
     email = EmailMessage(subject, body, to=[send_email_address])
     email.send()
     return f'Person count is {num_persons}'
+
+
+@shared_task
+def send_all_persons(persons_list):
+    send_email_address = config('SENT_EMAIL_ADDRESS')
+    subject = f'Количество людей в базе'
+    body = f'На текущий момент в базе {len(persons_list)} человек. '
+    body_persons = ', '.join(persons_list)
+    email = EmailMessage(subject, body + body_persons, to=[send_email_address])
+    email.send()
+    return f'Persons send'
