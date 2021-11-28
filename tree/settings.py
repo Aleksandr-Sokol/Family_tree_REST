@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'family_tree',
     'django_celery_beat',
     'django_celery_results',
+    'drf_yasg',
 ]
 
 REST_FRAMEWORK = {
