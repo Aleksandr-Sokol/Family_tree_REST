@@ -6,6 +6,10 @@ from .tasks import send_all_persons
 
 
 class TaskViewPeople(APIView):
+    """
+    Return family, name, gender for all persons in data base
+    Adn send this data to email
+    """
     def get(self, request):
         peoples = Person.objects.all()
         serializer = PersonSerializer(peoples, many=True)
