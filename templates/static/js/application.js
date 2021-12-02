@@ -236,27 +236,33 @@ $(document).ready(function() {
         $('option[value="Perm"]').attr('selected', 'selected').parent().focus();
         // Люди мужского пола
         let mans = get_person({'gender': 'M'})
-        for (let i = 0; i < mans.length; i++) {
-            let opt = document.createElement('option');
-            opt.value = mans[i]['id'];
-            opt.innerHTML = mans[i]['family'] + ' ' + mans[i]['name'];
-            person_father_select.appendChild(opt);
+        if (!!mans) {
+            for (let i = 0; i < mans.length; i++) {
+                let opt = document.createElement('option');
+                opt.value = mans[i]['id'];
+                opt.innerHTML = mans[i]['family'] + ' ' + mans[i]['name'];
+                person_father_select.appendChild(opt);
+            }
         }
         // Люди женского пола
         let womens = get_person({'gender': 'F'})
-        for (let i = 0; i < womens.length; i++) {
-            let opt = document.createElement('option');
-            opt.value = womens[i]['id'];
-            opt.innerHTML = womens[i]['family'] + ' ' + womens[i]['name'];
-            person_mother_select.appendChild(opt);
+        if (!!womens) {
+            for (let i = 0; i < womens.length; i++) {
+                let opt = document.createElement('option');
+                opt.value = womens[i]['id'];
+                opt.innerHTML = womens[i]['family'] + ' ' + womens[i]['name'];
+                person_mother_select.appendChild(opt);
+            }
         }
         // Все Люди
         let peoples = get_person({})
-        for (let i = 0; i < peoples.length; i++) {
-            let opt = document.createElement('option');
-            opt.value = peoples[i]['id'];
-            opt.innerHTML = peoples[i]['family'] + ' ' + peoples[i]['name'];
-            person_current_spouse_select.appendChild(opt);
+        if (!!peoples){
+            for (let i = 0; i < peoples.length; i++) {
+                let opt = document.createElement('option');
+                opt.value = peoples[i]['id'];
+                opt.innerHTML = peoples[i]['family'] + ' ' + peoples[i]['name'];
+                person_current_spouse_select.appendChild(opt);
+            }
         }
         //        Открыть модальное окно
         if ($(this).hasClass('update'))
