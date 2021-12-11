@@ -20,7 +20,9 @@ from .yasg import urlpatterns as doc_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('family_tree.urls')),
+    # path('', include('family_tree_api.urls_view')),
+    path('api/', include('family_tree_api.urls')),
+    path('', include('family_tree_view.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),  # получить
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),  # обновить

@@ -19,7 +19,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'persons_info': {
-        'task': 'family_tree.tasks.persons_count',
+        'task': 'family_tree_api.tasks.persons_count',
         'schedule': crontab(minute=0, hour=7),
     }
 }
