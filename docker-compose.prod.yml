@@ -1,0 +1,70 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - FLOWER_PORT=5555
+    ports:
+      - 5555:5555
+    depends_on:
+      - "worker"
+
+  worker:
+    restart: on-failure
+    build: .
+    volumes:
+      - .:/app
+    command: celery -A tree worker -l INFO --pool=solo
+    depends_on:
+      - "postgresql_db"
+      - "redis"
+
+  postgresql_db:
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_DB: "tree_db"
+      POSTGRES_USER: "alexander"
+      POSTGRES_PASSWORD: "123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+      #- .:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: >
+      sh -c "celery -A tree beat &&
+             celery -A tree flower --address=127.0.0.1 --port=5555 &&
+            "
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - "postgresql_db"
+      - "redis"
+      - "worker"
+
+  nginx:
+    build:
+      context: ./Docker/nginx
+      dockerfile: Dockerfile_nginx
+    depends_on:
+      - "web"
+      - "postgresql_db"
+    ports:
+      - "80:80"
+    volumes:
+      - ./static/:/static
+
+volumes:
+  static:
