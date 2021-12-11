@@ -17,4 +17,4 @@ class TaskViewPeople(APIView):
         for d in serializer.data:
             people_table.append(f'{d["family"]} {d["name"]} {d["gender"]}')
         task = send_all_persons.delay(people_table)
-        return render(request, 'family_tree/tree.pug')
+        return render(request, 'family_tree_api/tree.pug')
