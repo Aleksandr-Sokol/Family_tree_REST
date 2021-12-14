@@ -1,4 +1,4 @@
-include family_tree/application.pug
+include family_tree_view/application.pug
 nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.shadow.pl-50.pr-50.pt-0.pb-0(role="navigation")
     ul.menu.cf
         li
@@ -8,6 +8,8 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                     #create_tree Построить "дерево"
                 li
                     #to_email Email
+                li
+                    #show_api API
                 li
                     #exit Выход
         li
@@ -82,10 +84,14 @@ nav.navbar.navbar-default.navbar-expand-lg.navbar-light.bg-light.border-dark.sha
                                 option(value="F")="жен"
                         .input-group.mb-2
                             .input-group-prepend
-                                span.input-group-text='Место рождения. Страна'
+                                span.input-group-text='Место рождения. Страна '
                                     select.marker_type_change#birthplace_country_select(style="width: 150px")
-                                    span='Город'
+                                    span=' Город '
                                     select.marker_type_change#birthplace_sity_select(style="width: 150px")
+                        .input-group.mb-2
+                            .input-group-prepend
+                                span.input-group-text='Дата рождения: '
+                                    input#birthplace_date_select(type="datetime-local", style="width: 180px")
                         .input-group.mb-2
                             .input-group-prepend
                                 span.input-group-text='Отец: '
