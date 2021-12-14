@@ -30,6 +30,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS').split(' ')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
@@ -43,10 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'family_tree',
+    'family_tree_api',
+    'family_tree_view',
     'django_celery_beat',
     'django_celery_results',
     'drf_yasg',
+    'psycopg2',
 ]
 
 REST_FRAMEWORK = {
@@ -115,7 +118,8 @@ DATABASES = {
         'NAME': 'tree_db',
         'USER': 'alexander',
         'PASSWORD': '123',
-        'HOST': 'postgresql_db',
+        # 'HOST': 'postgresql_db', # For production (start in docker)
+        'HOST': 'localhost', # (start in localhost)
         'PORT': '5432',
     }
 }
@@ -168,7 +172,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # APPEND_SLASH = True
 
@@ -184,3 +188,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = decouple_config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = decouple_config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
+
+DJANGO_SUPERUSER_PASSWORD = '123'
+DJANGO_SUPERUSER_EMAIL = 'blank@email.com'
+
+# ДЛя работы со статическими файлами из nginx
+STATIC_ROOT = BASE_DIR / 'static/'
