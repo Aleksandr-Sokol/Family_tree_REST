@@ -17,7 +17,7 @@ $(document).ready(function() {
     }
 
     function get_person(data){
-        let url = '/person';
+        let url = '/api/person';
         let person_dict;
         $.ajax({
 	       type: 'GET',
@@ -35,7 +35,7 @@ $(document).ready(function() {
     }
 
     function get_position(){
-        let url = '/position';
+        let url = '/api/position';
         let position_dict;
         $.ajax({
 	       type: 'GET',
@@ -139,8 +139,12 @@ $(document).ready(function() {
         window.open('tree')
     })
 
+    $(document).on('click', '#show_api', function (e) {
+        window.open('swagger')
+    })
+
     $(document).on('click', '#to_email', function (e) {
-        let url = '/send_peoples';
+        let url = '/api/send_peoples';
         $.ajax({
 	       type: 'GET',
 	       url: url,
@@ -157,7 +161,7 @@ $(document).ready(function() {
     // Удаление человека из базы
     $(document).on('click', '#person_delete_window', function (e) {
         let select_person_id = $('#find_peoples').find(":selected").val()
-        let url = '/person/' + select_person_id;
+        let url = '/api/person/' + select_person_id;
         $.ajax({
 	       type: 'DELETE',
 	       url: url,
@@ -308,7 +312,7 @@ $(document).ready(function() {
                   'Authorization': 'Bearer ' + readCookie('jwt'),
                   },
                   type: 'PUT',
-                  url: '/person/' + select_person_id,
+                  url: '/api/person/' + select_person_id,
 
                   data: JSON.stringify(json_table),
                    dataType: 'json',
@@ -328,7 +332,7 @@ $(document).ready(function() {
                 'Authorization': 'Bearer ' + readCookie('jwt'),
               },
               type: 'POST',
-              url: '/person',
+              url: '/api/person',
               data: JSON.stringify(json_table),
                dataType: 'json',
               success: function(data, status){
